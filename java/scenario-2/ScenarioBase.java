@@ -8,27 +8,28 @@ public class ScenarioBase {
         
         System.out.println("Scenario Base of Lab06!");
         
-        BlockingQueue<Task> q = new LinkedBlockingQueue<>();
+        PriorityBlockingQueue<Task> q = new PriorityBlockingQueue<>(20);
 
-        ScheduledExecutorService producerExecutor = Executors.newScheduledThreadPool(5);
+        ScheduledExecutorService producerExecutor = Executors.newScheduledThreadPool(3);
         ExecutorService es = Executors.newFixedThreadPool(3);
         
         ArrayList<TaskProducer> arr = new ArrayList<TaskProducer>();
-        for(int i=0;i<5;i++){
+        int tempos[] = {13, 7, 3};
+        for(int i=0;i<3;i++){
             TaskProducer tp = new TaskProducer(q, i);
             arr.add(tp);
-            producerExecutor.scheduleAtFixedRate(tp, 5, 5, SECONDS);
+            producerExecutor.scheduleAtFixedRate(tp, tempos[i], tempos[i], SECONDS);
         }
         
         for(int i = 0; i < 3; i++) {
             Node n = new Node(q);
             es.execute(n);
         }
-
-        while(true){
+        
+         while(true){
             System.out.println();
-            for(TaskProducer tp: arr) tp.showFinishedTasks();
-            try{ Thread.sleep(5000); }catch(Exception e){}
+           for(TaskProducer tp: arr) tp.showFinishedTasks();
+           try{ Thread.sleep(5000); }catch(Exception e){}
         }
 
     }

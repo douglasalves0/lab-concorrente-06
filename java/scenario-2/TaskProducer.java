@@ -2,18 +2,18 @@ import java.util.ArrayList;
 import java.util.concurrent.*;
 
 public class TaskProducer implements Runnable {
-    private BlockingQueue<Task> q;
+    private PriorityBlockingQueue<Task> q;
     ArrayList<Task> a;
     private int i = 0;
     private int id;
-    public TaskProducer(BlockingQueue<Task> q, int id){
+    public TaskProducer(PriorityBlockingQueue<Task> q, int id){
         this.q = q;
         this.id = id;
         a = new ArrayList<Task>();
     }
     @Override
     public void run(){
-        Task t = new Task(i++);
+        Task t = new Task(i++, id);
         try{
             q.put(t);
             a.add(t);
