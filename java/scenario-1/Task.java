@@ -1,10 +1,15 @@
 import java.util.Random;
+import java.time.*;
 
 public class Task {
     long id;
+    long initial;
+    long ending;
 
     public Task(long id) {
         this.id = id;
+        this.initial = Instant.now().toEpochMilli();
+        this.ending = -1;
     }
 
     public void execute() {
@@ -15,5 +20,6 @@ public class Task {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        this.ending = Instant.now().toEpochMilli();
     }
 }
